@@ -2,14 +2,10 @@ name: mkimg-th1520-ci
 
 on:
   push:
-    tags:        
-      - '*'
   pull_request:
   workflow_dispatch:
 
 env:
-  xuetie_toolchain: https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282
-  toolchain_file_name: Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz
   ARCH: riscv
 
 jobs:
@@ -19,7 +15,6 @@ jobs:
       matrix:
         include:
           - name: thead-gcc
-            toolchain_tripe: riscv64-unknown-linux-gnu-
             apt_triple: riscv64-linux-gnu  # TODO: remove this line
 
     runs-on: ubuntu-22.04
@@ -41,12 +36,6 @@ jobs:
                                   qemu-user-static binfmt-support mmdebstrap 
               wget https://mirror.iscas.ac.cn/revyos/revyos-addons/pool/main/r/revyos-keyring/revyos-keyring_2023.06.12_all.deb
               sudo apt install ./revyos-keyring_2023.06.12_all.deb
-
-      - name: Configure Toolchains
-        run: |
-              # Install thead-gcc-toolchain
-              wget ${xuetie_toolchain}/${toolchain_file_name}
-              tar -xvf ${toolchain_file_name} -C /opt
 
       - name: Checkout qemu
         uses: actions/checkout@v3
